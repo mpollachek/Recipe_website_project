@@ -1,3 +1,9 @@
+from django.conf.urls import url, include
+from django.contrib import admin
+from recipe_app.views import home
+
+from recipe_app import urls as recipe_app_urls
+
 """recipes URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,7 +22,9 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from recipe_app import urls as recipe_app_urls
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^recipe_app/', include('recipe_app.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^recipe_app/', include(recipe_app_urls)),
 ]
