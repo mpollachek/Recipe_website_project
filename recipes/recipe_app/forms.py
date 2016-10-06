@@ -1,7 +1,14 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile
+from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile, MealType
+
+
+class MealTypeForm(forms.Form):
+    mt_field = forms.MultipleChoiceField(choices=MEALTYPE_CHOICES,
+                                         widget=forms.CheckboxSelectMultiple())
+
+
 
 
 class SearchRecipeForm(forms.ModelForm):

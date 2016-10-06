@@ -5,10 +5,15 @@ from django.db import models
 from django.contrib.auth .models import User
 
 
-RATING_VALUES = ((1, 1), (1.5, 1.5), (2, 2), (2.5, 2.5), (3, 3), (3.5, 3.5), (4, 4), (4.5, 4.5), (5, 5), )
+RATING_VALUES = ((1, 1), (1.5, 1.5), (2, 2), (2.5, 2.5), (3, 3), (3.5, 3.5), (4, 4), (4.5, 4.5), (5, 5))
+
+MEALTYPE_CHOICES = (('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', 'Dinner'), ('Appetizer', 'Appetizer'),
+                    ('Side_Dish', 'Side Dish'), ('Dessert', 'Dessert'))
+
 
 class MealType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(choices=MEALTYPE_CHOICES)
+
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
@@ -44,6 +49,7 @@ class RecipeRating(models.Model):
     def __unicode__(self):
         return "RecipeRating
     """
+
 
 class UserProfile(models.Model):
     if __name__ == '__main__':

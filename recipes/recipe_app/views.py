@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Q
 
 from recipe_app.models import Recipe, MealType, Ingredient, RecipeRating
 
@@ -12,8 +13,11 @@ def home(request):
         form = SearchRecipeForm(request.POST)
         if form.is_valid():
 
-            all_recipes = Recipe.objects.all()
-
+            #all_recipes = Recipe.objects.all()
+            Recipe.object.get(
+                Q(title__icontains='form.cleaned_data.iteritems()) |
+                Q(ingredients__icontains='form.cleaned_data.iteritems())
+            )
 
     return render(request, 'home.html', )
 
