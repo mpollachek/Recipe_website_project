@@ -109,8 +109,20 @@
          </form>
       </div>
 
+      <div>
+          <form action="" method="GET">
+              <input type="text" name='q' placeholder="Recipe Name or Ingredients here" />
+              <input id=search_recipe_form type="submit" value="Search Recipes!" />
+          </form>
+      </div>
 
 
+        {% for obj in queryset_results %}
+
+        {{ obj.title }}<br/>
+        {{ obj.description }}<br/>
+
+        {% endfor %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

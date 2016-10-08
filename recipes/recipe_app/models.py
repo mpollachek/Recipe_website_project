@@ -11,26 +11,47 @@ MEALTYPE_CHOICES = (('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', '
                     ('Side_Dish', 'Side Dish'), ('Dessert', 'Dessert'))
 
 
+class RecipeName(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.title
+
+
 class MealType(models.Model):
-    name = models.CharField(choices=MEALTYPE_CHOICES)
+    name = models.CharField(max_length=100, choices=MEALTYPE_CHOICES)
+
+    def __unicode__(self):
+        return "{}".format(self.name)
 
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return "{}".format(self.name)
+
+class Measurement(models.Model):
+    amount = models.CharField(max_length=20)
+    unit = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return "{} {}".format(self.amount, self.unit)
+
 class Recipe(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.ManyToManyField(RecipeName)
     description = models.TextField(null=True)
     meal_type = models.ManyToManyField(MealType)
-    measurement = models.CharField(max_length=255)
+    measurement = models.ManyToManyField(Measurement)
     ingredients = models.ManyToManyField(Ingredient)
     directions = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    """def __unicode__(self):
-        return "Recipe {} rating is" .format(self.title)
-"""
+    def __unicode__(self):
+        return "Recipe {}, description: {}, meal_type: {}, measurement: {}, ingredients: {}, directions: {}"\
+            .format(self.title, self.description, self.meal_type, self.measurement, self.ingredients, self.directions)
+
     def get_rating(self):
         if not self.rating_set.count():
             return "No ratings for {}" .format(self.title)
@@ -47,7 +68,7 @@ class RecipeRating(models.Model):
 
     """
     def __unicode__(self):
-        return "RecipeRating
+        return "RecipeRating"
     """
 
 
