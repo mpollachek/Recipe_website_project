@@ -1,5 +1,10 @@
 from django.contrib import admin
 
-from recipe_app.models import UserProfile
+from models import Recipe, Ingredient, Measurement, RecipeRating, MealType
+
+
+MyModels = [Recipe, Ingredient, Measurement, RecipeRating, MealType]
+
+admin.site.register(MyModels)
 
 

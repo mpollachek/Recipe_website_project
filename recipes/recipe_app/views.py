@@ -2,10 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.views import generic
 
 from recipe_app.models import Recipe, MealType, Ingredient, RecipeRating
 
-from recipe_app.forms import RatingForm, IngredientForm, RecipeForm, SearchRecipeForm
+from recipe_app.forms import RatingForm, RecipeForm, SearchRecipeForm
 
 
 def home(request):
