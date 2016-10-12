@@ -2,11 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import CreateView
 
-from recipe_app.models import Recipe, MealType, Ingredient, Measurement
+from recipe_app.models import Recipe, MealType, Ingredient
 
-from recipe_app.forms import RecipeForm, IngredientFormSet, MeasurementFormSet
+from recipe_app.forms import RecipeForm, IngredientFormSet
+from django.forms.models import formset_factory
 
 
+
+
+"""
 class RecipeCreate(CreateView):
     model = Recipe
     template_name = 'addrecipe.html'
@@ -16,7 +20,7 @@ class RecipeCreate(CreateView):
         ingredient_form = IngredientFormSet()
         measurement_form = MeasurementFormSet()
         return render(request, 'addrecipe.html')
-
+"""
 
 """
 def addrecipe(request):

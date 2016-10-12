@@ -1,14 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import widgets
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, formset_factory
 
-from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile, MealType, MEALTYPE_CHOICES, Measurement
+from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile, MealType, MEASUREMENTUNIT_CHOICES
 
 
 class MealTypeForm(forms.Form):
-    mt_field = forms.MultipleChoiceField(choices=MEALTYPE_CHOICES,
-                                         widget=forms.CheckboxSelectMultiple())
+    mt_field = forms.ModelMultipleChoiceField(queryset=MealType.objects.all, widget=forms.CheckboxSelectMultiple)
 
 
 class SearchRecipeForm(forms.TextInput):
@@ -29,16 +28,12 @@ class IngredientForm(forms.ModelForm):
         model = Ingredient
         fields = ['name', ]
 
-class MeasurementForm(forms.ModelForm):
-    class Meta:
-        model = Measurement
-        fields = ('amount', 'unit', )
 """
 
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'meal_type', 'directions', ]
+        fields = ['name', 'description', 'meal_type', 'directions', ]
         #if using multiple forms, I will remove some fields i.e.measurement, ingredients, title
 
 
@@ -56,5 +51,4 @@ class UserProfileForm(forms.ModelForm):
         fields = ('picture',)
 """
 
-IngredientFormSet = inlineformset_factory(Recipe, Ingredient, fields=('name', 'recipe'))
-MeasurementFormSet = inlineformset_factory(Ingredient, Measurement, fields=('amount', 'unit', 'ingredient'))
+IngredientFormSet = inlineformset_factory(Recipe, Ingredient, fields=('quantity', 'measurement_unit', 'name'))

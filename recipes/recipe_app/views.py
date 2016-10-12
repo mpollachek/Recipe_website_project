@@ -14,7 +14,7 @@ def home(request):
     queryset_list = Recipe.objects.all()
     query = request.GET.get("q")
     if query:
-        queryset_list = Recipe.objects.all().filter(Q(title__icontains=query) | Q(ingredients__icontains=query)).distinct()
+        queryset_list = Recipe.objects.all().filter(Q(name__icontains=query) | Q(ingredients__icontains=query)).distinct()
     paginator = Paginator(queryset_list, 25)
 
 
@@ -32,14 +32,14 @@ def home(request):
         if search_recipe_form.is_valid():
 
             #all_recipes = Recipe.objects.all()
-            clean_title = search_recipe_form.cleaned_data['title']
+            clean_name = search_recipe_form.cleaned_data['name']
             clean_ingredients = search_recipe_form.cleaned_data['ingredients']
-            results = Recipe.objects.filter(Q(title__icontains=clean_title) | Q(ingredients__icontains=clean_ingredients))
+            results = Recipe.objects.filter(Q(name__icontains=clean_name) | Q(ingredients__icontains=clean_ingredients))
 
             """
 """
             results = Recipe.objects.get(
-                #Q(title__icontains='search_recipe_form.cleaned_data.iteritems()) |
+                #Q(name__icontains='search_recipe_form.cleaned_data.iteritems()) |
                 Q(ingredients__icontains='search_recipe_form.cleaned_data.iteritems())
             )
 """
@@ -47,15 +47,15 @@ def home(request):
 
         else:
             search_recipe_form = SearchRecipeForm()
-            clean_title = search_recipe_form.cleaned_data['title']
+            clean_name = search_recipe_form.cleaned_data['title']
             clean_ingredients = search_recipe_form.cleaned_data['ingredients']
 
     else:
         search_recipe_form = SearchRecipeForm()
-        clean_title = search_recipe_form
+        clean_name = search_recipe_form
         clean_ingredients = search_recipe_form
 
-    context = {'search_recipe_form': search_recipe_form, 'clean_title': clean_title,
+    context = {'search_recipe_form': search_recipe_form, 'clean_name': clean_name,
                'clean_ingredients': clean_ingredients,}
 
     return results

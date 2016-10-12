@@ -7,44 +7,31 @@ from django.contrib.auth .models import User
 
 RATING_VALUES = ((1, 1), (1.5, 1.5), (2, 2), (2.5, 2.5), (3, 3), (3.5, 3.5), (4, 4), (4.5, 4.5), (5, 5))
 
-MEALTYPE_CHOICES = (('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', 'Dinner'), ('Appetizer', 'Appetizer'),
-                    ('Side_Dish', 'Side Dish'), ('Dessert', 'Dessert'))
+
+MEASUREMENTUNIT_CHOICES = (('tsp', 'tsp'), ('tbsp', 'tbsp'), ('fl oz', 'fl oz'), ('cup', 'cup'), ('pint', 'pint'),
+                           ('quart', 'quart'), ('ml', 'ml'), ('cc', 'cc'), ('liter', 'liter'), ('lb', 'lb'),
+                           ('oz', 'oz'), ('mg', 'mg'), ('g', 'g'), ('kg', 'kg'), ('pieces', 'pieces'))
 
 
 
 class MealType(models.Model):
-    name = models.CharField(max_length=100, choices=MEALTYPE_CHOICES)
+    name = models.CharField(max_length=100)   #make model without choices.  prepopulate new model
 
     def __unicode__(self):
         return "{}".format(self.name)
 
-"""
-class Ingredient(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return "{}".format(self.name)
-
-
-class Measurement(models.Model):
-    amount = models.CharField(max_length=20)
-    unit = models.ManyToManyField(Ingredient)
-
-    def __unicode__(self):
-        return "{} {}".format(self.amount, self.unit)
-"""
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    meal_type = models.ManyToManyField(MealType)
+    meal_type = models.ForeignKey(MealType)
     directions = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "Recipe {}, description: {}, meal_type: {}, measurement: {}, ingredients: {}, directions: {}"\
-            .format(self.title, self.description, self.meal_type, self.measurement, self.ingredients, self.directions)
+        return "Recipe {}, description: {}, meal_type: {}, directions: {}"\
+            .format(self.name, self.description, self.meal_type, self.directions)
 
     def get_rating(self):
         if not self.rating_set.count():
@@ -54,25 +41,20 @@ class Recipe(models.Model):
             total += rate.rating
         return total / self.rating_set.count()
 
+
 class Ingredient(models.Model):
-    name = models.CharField(max_length=255)
     recipe = models.ForeignKey(Recipe)
+    name = models.CharField(max_length=255)
+    quantity = models.FloatField(max_length=10)
+    measurement_unit = models.CharField(max_length=100, choices=MEASUREMENTUNIT_CHOICES, default='tsp', null=True)
 
     def __unicode__(self):
-        return "{}".format(self.name)
+        return "{} {} - {}".format(self.quantity, self.measurement_unit, self.name)
 
-
-class Measurement(models.Model):
-    amount = models.CharField(max_length=20)
-    unit = models.CharField(max_length=20)
-    ingredient = models.ForeignKey(Ingredient)
-
-    def __unicode__(self):
-        return "{} {}".format(self.amount, self.unit)
 
 class RecipeRating(models.Model):
     recipe_name = models.ForeignKey(Recipe)
-    rating = models.FloatField(choices = RATING_VALUES)
+    rating = models.FloatField(choices=RATING_VALUES)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
