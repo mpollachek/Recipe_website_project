@@ -13,12 +13,12 @@ MEALTYPE_CHOICES = (('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', '
 
 
 class MealType(models.Model):
-    name = models.CharField(max_length=100, choices=MEALTYPE_CHOICES)   #make model without choices.  prepopulate new model
+    name = models.CharField(max_length=100, choices=MEALTYPE_CHOICES)
 
     def __unicode__(self):
         return "{}".format(self.name)
 
-
+"""
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
 
@@ -27,18 +27,17 @@ class Ingredient(models.Model):
 
 
 class Measurement(models.Model):
-    amount = models.CharField(max_length=20)   #float
-    unit = models.ManyToManyField(Ingredient)  #foreignkey to list of choices.   should be in ingredient model
+    amount = models.CharField(max_length=20)
+    unit = models.ManyToManyField(Ingredient)
 
     def __unicode__(self):
         return "{} {}".format(self.amount, self.unit)
-
+"""
 
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    measurement = models.ForeignKey(Measurement)   #put measurement into ingredient and do foreign key into ingredient
-    meal_type = models.ManyToManyField(MealType)   #change meal_type to prepopulated table and make this a foreignkey
+    meal_type = models.ManyToManyField(MealType)
     directions = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -55,7 +54,21 @@ class Recipe(models.Model):
             total += rate.rating
         return total / self.rating_set.count()
 
+class Ingredient(models.Model):
+    name = models.CharField(max_length=255)
+    recipe = models.ForeignKey(Recipe)
 
+    def __unicode__(self):
+        return "{}".format(self.name)
+
+
+class Measurement(models.Model):
+    amount = models.CharField(max_length=20)
+    unit = models.CharField(max_length=20)
+    ingredient = models.ForeignKey(Ingredient)
+
+    def __unicode__(self):
+        return "{} {}".format(self.amount, self.unit)
 
 class RecipeRating(models.Model):
     recipe_name = models.ForeignKey(Recipe)
