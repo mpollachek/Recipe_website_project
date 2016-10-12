@@ -1,14 +1,29 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import widgets
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, formset_factory
 
 from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile, MealType, MEALTYPE_CHOICES, Measurement
 
 
 class MealTypeForm(forms.Form):
-    mt_field = forms.MultipleChoiceField(choices=MEALTYPE_CHOICES,
-                                         widget=forms.CheckboxSelectMultiple())
+    mt_field = forms.ModelMultipleChoiceField(choices=MEALTYPE_CHOICES, widget=forms.CheckboxSelectMultiple)  #queryset=MealType.objects.all instead of choices
+
+    Ingredient(models.Model):
+    name = models.CharField(max_length=255)
+    recipe = models.ForeignKey(Recipe)
+
+    def __unicode__(self):
+        return "{}".format(self.name)
+
+
+class Measurement(models.Model):
+    amount = models.CharField(max_length=20)
+    unit = models.CharField(max_length=20)
+    ingredient = models.ForeignKey(Ingredient)
+
+    def __unicode__(self):
+        return "{} {}".format(self.amount, self.unit)
 
 
 class SearchRecipeForm(forms.TextInput):
