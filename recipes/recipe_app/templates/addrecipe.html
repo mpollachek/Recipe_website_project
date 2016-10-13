@@ -7,13 +7,19 @@
     <body>
 
     <form>
+    Recipe Name: {{ recipe_form.recipe_name }} </p>
+    {{ ingredient_form.as_table }} </p>
+    {% for form in ingredient_form %}
+        {{ form.as_table  }}
+    {% endfor %} </p>
+    <input type="submit" value="Add Ingredient" name="add_ingredient"/> </p>
 
-    {{ measurement_form }}
 
-    {{ ingredient_form }}
+    Description: {{ recipe_form.description }} </p>
+    Meal Type: {{ recipe_form.meal_type }} </p>
+    Directions: {{ recipe_form.directions }} </p>
 
-    {{ recipe_form.as_p }}
-    <input type="submit" value="Add Recipe" />
+    <input type="submit" value="Add Recipe" name="submit"/>
 
 
     </form>

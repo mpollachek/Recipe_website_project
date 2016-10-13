@@ -33,7 +33,7 @@ class IngredientForm(forms.ModelForm):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ['name', 'description', 'meal_type', 'directions', ]
+        fields = ['recipe_name', 'description', 'meal_type', 'directions', ]
         #if using multiple forms, I will remove some fields i.e.measurement, ingredients, title
 
 
@@ -51,4 +51,12 @@ class UserProfileForm(forms.ModelForm):
         fields = ('picture',)
 """
 
-IngredientFormSet = inlineformset_factory(Recipe, Ingredient, fields=('quantity', 'measurement_unit', 'name'))
+class ContactForm(forms.Form):
+    contact_name = forms.CharField(required=True)
+    contact_email = forms.CharField(required=True)
+    content = forms.CharField(required=True, widget=forms.Textarea)
+
+IngredientFormSet = inlineformset_factory(
+    Recipe, Ingredient, extra=0, can_delete=False, min_num=1,
+    fields=('quantity', 'measurement_unit', 'ingredient_name')
+    )

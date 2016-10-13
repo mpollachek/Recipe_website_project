@@ -22,7 +22,7 @@ class MealType(models.Model):
 
 
 class Recipe(models.Model):
-    name = models.CharField(max_length=255)
+    recipe_name = models.CharField(max_length=255)
     description = models.TextField(null=True)
     meal_type = models.ForeignKey(MealType)
     directions = models.TextField()
@@ -44,7 +44,7 @@ class Recipe(models.Model):
 
 class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
-    name = models.CharField(max_length=255)
+    ingredient_name = models.CharField(max_length=255)
     quantity = models.FloatField(max_length=10)
     measurement_unit = models.CharField(max_length=100, choices=MEASUREMENTUNIT_CHOICES, default='tsp', null=True)
 

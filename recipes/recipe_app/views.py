@@ -3,10 +3,13 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.views import generic
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
 
 from recipe_app.models import Recipe, MealType, Ingredient, RecipeRating
 
-from recipe_app.forms import RatingForm, RecipeForm, SearchRecipeForm
+from recipe_app.forms import RatingForm, RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet
 
 
 def home(request):
@@ -83,7 +86,31 @@ def myrecipes(request):
 
 
 def contact(request):
-    pass
+    contact_form = ContactForm
+
+    if request.method == 'POST':
+        form = contact_form(data=request.POST)
+
+        if form.is_valid():
+            contact_name = request.POST.get('contact_name', '')
+            contact_email = request.POST.get('contact_email', '')
+            form_content = request.POST.get('content', '')
+
+            template = get_template('contact_template.txt')
+            context = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'form_content': form_content,
+            })
+            content = template.render(context)
+            email = EmailMessage("New contact form submission",
+                                 content,
+                                 "Baller Recipes" + '',
+                                 ['mpollachek81@gmail.com']
+                                 )
+            email.send()
+            return redirect('contact')
+    return render(request, 'contact.html', {'contact_form': contact_form})
 
 
 def about(request):
