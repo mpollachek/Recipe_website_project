@@ -15,7 +15,7 @@ MEASUREMENTUNIT_CHOICES = (('tsp', 'tsp'), ('tbsp', 'tbsp'), ('fl oz', 'fl oz'),
 
 
 class MealType(models.Model):
-    name = models.CharField(max_length=100)   #make model without choices.  prepopulate new model
+    name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return "{}".format(self.name)
@@ -31,11 +31,11 @@ class Recipe(models.Model):
 
     def __unicode__(self):
         return "Recipe {}, description: {}, meal_type: {}, directions: {}"\
-            .format(self.name, self.description, self.meal_type, self.directions)
+            .format(self.recipe_name, self.description, self.meal_type, self.directions)
 
     def get_rating(self):
         if not self.rating_set.count():
-            return "No ratings for {}" .format(self.title)
+            return "No ratings for {}" .format(self.recipe_name)
         total = 0
         for rate in self.rating_set.all():
             total += rate.rating
@@ -46,14 +46,14 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     ingredient_name = models.CharField(max_length=255)
     quantity = models.FloatField(max_length=10)
-    measurement_unit = models.CharField(max_length=100, choices=MEASUREMENTUNIT_CHOICES, default='tsp', null=True)
+    measurement_unit = models.CharField(max_length=100, choices=MEASUREMENTUNIT_CHOICES, null=True)
 
     def __unicode__(self):
-        return "{} {} - {}".format(self.quantity, self.measurement_unit, self.name)
+        return "{} {} - {}".format(self.quantity, self.measurement_unit, self.ingredient_name, self.recipe)
 
 
 class RecipeRating(models.Model):
-    recipe_name = models.ForeignKey(Recipe)
+    recipe = models.ForeignKey(Recipe)
     rating = models.FloatField(choices=RATING_VALUES)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

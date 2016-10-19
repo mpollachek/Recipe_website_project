@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <div>
+          <form action="" method="GET">
+              <input type="text" name='q' placeholder="Recipe Name or Ingredients here" value="{{ request.GET.q }}"/>
+              <input id=search_recipe_form type="submit" value="Search Recipes!" />
+          </form>
+      </div>
+    </head>
+    <body>
+        {% for obj in queryset_results %}
+
+        {{ obj.recipe_name }}<br/>
+        {{ obj.description }}<br/>
+
+        {% endfor %}
+
+<!--
+    <div class="pagination">
+        <span class="step-links">
+            {% if queryset_results.has_previous %}
+                <a href="?{{ page_request_var }}={{ queryset_results.previous_page_number }}">previous</a>
+            <% endif %>
+
+            <span class="current">
+                Page {{ queryset_results.number }} of {{queryset_results.paginator.num_pages }}.
+            </span>
+
+            {% if queryset_results.has_next %}
+                <a href="?{{ page_request_var }}={{ contacts.next_page_number }}">next</a>
+            {% endif %}
+
+        </span>
+    </div>
+-->
+
+    </body>
+</html>

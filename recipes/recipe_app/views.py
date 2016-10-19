@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views import generic
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
@@ -14,19 +14,40 @@ from recipe_app.forms import RatingForm, RecipeForm, SearchRecipeForm, ContactFo
 
 def home(request):
 
-    queryset_list = Recipe.objects.all()
+    queryset_list = Recipe.objects.all() #.order_by(RecipeRating)
+
     query = request.GET.get("q")
+
+    #if request.method == 'POST':
     if query:
-        queryset_list = Recipe.objects.all().filter(Q(name__icontains=query) | Q(ingredients__icontains=query)).distinct()
-    paginator = Paginator(queryset_list, 25)
+        queryset_list = Recipe.objects.filter(Q(recipe_name__icontains=query) |
+                                              Q(ingredient__ingredient_name__icontains=query)).distinct()
 
+        context = {
+            "queryset_results": queryset_list,
+            #"page_request_var": page_request_var
+        }
+        return render(request, "home.html", context)
 
+    else:
 
+        context = {
+            "queryset_results": queryset_list
+        }
+        return render(request, "home.html", context)
 
-    context = {
-        "queryset_results": queryset_list
-    }
-    return render(request, "home.html", context)
+"""
+        paginator = Paginator(queryset_list, 25)
+        page_request_var = "page"
+        page = request.Get.get(page_request_var)
+        try:
+            queryset = paginator.page(page)
+        except PageNotAnInteger:
+            queryset = paginator.page(1)
+        except EmptyPage:
+            queryset = paginator.page(paginator.num_pages)
+"""
+
 
 
 """

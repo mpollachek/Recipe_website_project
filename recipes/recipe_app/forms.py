@@ -19,7 +19,7 @@ class SearchRecipeForm(forms.TextInput):
 class RatingForm(forms.ModelForm):
     class Meta:
         model = RecipeRating
-        fields = ['recipe_name', 'rating', ]
+        fields = ['recipe', 'rating', ]
 
 """
 
@@ -57,6 +57,6 @@ class ContactForm(forms.Form):
     content = forms.CharField(required=True, widget=forms.Textarea)
 
 IngredientFormSet = inlineformset_factory(
-    Recipe, Ingredient, extra=0, can_delete=False, min_num=1,
+    Recipe, Ingredient, extra=5, can_delete=False, min_num=1,
     fields=('quantity', 'measurement_unit', 'ingredient_name')
     )

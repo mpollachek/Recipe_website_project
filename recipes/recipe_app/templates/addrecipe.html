@@ -8,9 +8,9 @@
 
     <form>
     Recipe Name: {{ recipe_form.recipe_name }} </p>
-    {{ ingredient_form.as_table }} </p>
+
     {% for form in ingredient_form %}
-        {{ form.as_table  }}
+        {{ form.as_table }} </p>
     {% endfor %} </p>
     <input type="submit" value="Add Ingredient" name="add_ingredient"/> </p>
 

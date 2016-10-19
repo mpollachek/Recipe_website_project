@@ -34,7 +34,10 @@ def addrecipe(request):
 
         elif 'submit' in request.POST:
                 if ingredient_form.is_valid() and recipe_form.is_valid():
-                    ingredient_form.save()
+                    ings = ingredient_form.save(commit=False)
+
+                    for ing in ings:
+                        ing.save()
                     recipe_form.save()
 
     else:
