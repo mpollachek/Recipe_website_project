@@ -26,5 +26,5 @@ from recipe_app import urls as recipe_app_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^recipe_app/', include(recipe_app_urls)),
+    url(r'^recipe_app/', include(recipe_app_urls, namespace='recipes')),
 ]

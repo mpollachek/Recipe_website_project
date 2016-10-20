@@ -118,8 +118,10 @@
 
         {% for obj in queryset_results %}
 
-        <h4> {{ obj.recipe_name }} </h4>
-        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }}<br/> <br/>
+        <br/>
+        <!-- {% url "recipes:detail" id=obj.id %} -->
+        <a href="{{ obj.get_absolute_url }}">  <h4> {{ obj.recipe_name }} </h4> </a>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }} <br/>
 
         {% endfor %}
 

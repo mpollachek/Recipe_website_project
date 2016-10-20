@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views import generic
@@ -90,8 +90,24 @@ def home(request):
 #Lookup AJAX for autocomplete feature
 
 
-def recipesearch(request):
+def recipe_detail(request, id=None):
+    instance = get_object_or_404(Recipe, id=id)
+
+    context = {
+        "rec": instance
+    }
+    return render(request, "recipe_detail.html", context)
+
+
+def recipe_update(request):
     pass
+
+
+def recipe_delete(request):
+    instance = get_object_or_404(Recipe, id=id)
+    instance.delete()
+    messages.success(request, "Successfully Deleted")
+    return redirect("recipes:home")
 
 
 def favorites(request):
