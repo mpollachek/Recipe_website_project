@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Add Your Recipe</title>
+    </head>
+
+    <body>
+
+    <form>
+    Recipe Name: {{ recipe_form.recipe_name }} </p>
+
+    {% for form in ingredient_form %}
+        {{ form.as_table }} </p>
+    {% endfor %} </p>
+    <input type="submit" value="Add Ingredient" name="add_ingredient"/> </p>
+
+
+    Description: {{ recipe_form.description }} </p>
+    Meal Type: {{ recipe_form.meal_type }} </p>
+    Directions: {{ recipe_form.directions }} </p>
+
+    <input type="submit" value="Add Recipe" name="submit"/>
+
+
+    </form>
+
+
+
+
+ </body>
+</html>
