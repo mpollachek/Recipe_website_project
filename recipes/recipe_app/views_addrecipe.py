@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import CreateView
 
@@ -24,7 +24,8 @@ class RecipeCreate(CreateView):
 
 
 def addrecipe(request, recipe_pk):
-    recipe = Recipe.objects.get(Recipe, pk=recipe_pk)
+    recipe = Recipe()
+    #recipe = Recipe.objects.get(Recipe, pk=recipe_pk)
 
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST)
@@ -38,9 +39,14 @@ def addrecipe(request, recipe_pk):
 
         if 'submit' in request.POST:
             if recipe_form.is_valid():
-                recipe_form.save()
-            if ingredient_form.is_valid():
-                ingredient_form.save()
+                created_recipe = recipe_form.save(commit=False)
+                ingredient_form = IngredientFormSet(request.POST, instance=created_recipe)
+
+                if ingredient_form.is_valid():
+                    created_recipe.save()
+                    ingredient_form.save()
+                    return HttpResponseRedirect(created_recipe.get_absolute_url())
+
                 #ings = ingredient_form.save(commit=False)
                 #for ing in ings:
                     #ingredient.recipe = recipe

@@ -63,7 +63,7 @@
               </ul>
             </li>
             {% if user.is_authenticated %}
-            <li><a href="/recipe_app/addrecipe">Create Recipe</a></li>
+            <li><a href="{% url 'recipes:addrecipe' %}>">Create Recipe</a></li>
             <li><a href="/recipe_app/logout">Log Out</a></li>
             {% else %}
             <li><a href="/recipe_app/createaccount">Create Account</a></li>
