@@ -6,12 +6,13 @@
 
     <body>
 
-    <form>
+    <form method="post" action="">
     Recipe Name: {{ recipe_form.recipe_name }} </p>
-
+    {{ ingredient_form.management_form }}
     {% for form in ingredient_form %}
         {{ form.as_table }} </p>
     {% endfor %} </p>
+      {% csrf_token %}
     <input type="submit" value="Add Ingredient" name="add_ingredient"/> </p>
 
 

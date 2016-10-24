@@ -57,6 +57,6 @@ class ContactForm(forms.Form):
     content = forms.CharField(required=True, widget=forms.Textarea)
 
 IngredientFormSet = inlineformset_factory(
-    Recipe, Ingredient, extra=5, can_delete=False, min_num=1,
+    Recipe, Ingredient, form=RecipeForm, extra=5, can_delete=False, min_num=1,
     fields=('quantity', 'measurement_unit', 'ingredient_name')
     )

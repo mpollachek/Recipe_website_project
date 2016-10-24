@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^favorites/', favorites),
     url(r'^toprated/', toprated),
     url(r'^myrecipes/', myrecipes),
-    url(r'^addrecipe/', addrecipe),
+    url(r'^addrecipe/(?P<recipe_pk>.*)/$', addrecipe),
     url(r'^createaccount/', createaccount),
     url(r'^contact/', contact),
     url(r'^about/', about),

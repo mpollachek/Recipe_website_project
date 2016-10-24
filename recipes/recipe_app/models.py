@@ -33,7 +33,7 @@ class Recipe(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "Recipe {}, description: {}, meal_type: {}, directions: {}, id: {}"\
+        return "Recipe: {}, description: {}, meal_type: {}, directions: {}, id: {}"\
             .format(self.recipe_name, self.description, self.meal_type, self.directions, self.id)
 
     def get_absolute_url(self):
