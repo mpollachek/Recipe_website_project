@@ -151,4 +151,4 @@ def contact(request):
 
 
 def about(request):
-    pass
+    return render(request, 'about.html')

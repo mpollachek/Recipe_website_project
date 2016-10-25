@@ -1,13 +1,24 @@
-<html>
+{% extends "layout.html" %}
 
-<head>
+{% block title %}Baller Recipes{% endblock %}
 
-    <body>
+{% block content %}
+
+</br></br></br>
+
+<!-- /*       {% load pinax_ratings_tags %}
+
+        {% overall_rating obj as the_overall_rating %}
+        Overall Rating: <div class="overall_rating">{{ the_overall_rating }}</div>
+
+        {% user_rating request.user obj as the_user_rating %}
+        Your Rating: <div class="user_rating">{{ the_user_rating }}</div>
 
         <h1> {{ rec.recipe_name }} </h1> <br/>
         Description: {{ rec.description}}<br/><br/>
         Meal Type: {{ rec.meal_type }}<br/><br/>
 
+*/ -->
         Ingredients: <br/>
         {% for ings in rec.ingredient_set.all %}
         {{ ings.quantity }}
@@ -19,8 +30,6 @@
         Created: {{ rec.created }}<br/><br/>
         Last Modified: {{ rec.modified }}<br/><br/>
 
-    </body>
 
-</head>
-
-</html>
+<!-- /*  {% user_rating_js request.user obj %}  */ -->
+{% endblock %}
