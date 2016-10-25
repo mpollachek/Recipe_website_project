@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #'django.contrib.sites',
     'recipe_app',
+    'pinax.ratings',
 
 ]
 
