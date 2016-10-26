@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import widgets
 from django.forms.models import inlineformset_factory, formset_factory
 
-from recipe_app.models import Ingredient, Recipe, RecipeRating, UserProfile, MealType, MEASUREMENTUNIT_CHOICES
+from recipe_app.models import Ingredient, Recipe, UserProfile, MealType, MEASUREMENTUNIT_CHOICES
 
 
 class MealTypeForm(forms.Form):
@@ -16,11 +16,12 @@ class SearchRecipeForm(forms.TextInput):
         fields = ['title', 'meal_type', 'ingredients',]
 
 
+"""
 class RatingForm(forms.ModelForm):
     class Meta:
         model = RecipeRating
         fields = ['recipe', 'rating', ]
-
+"""
 """
 
 class IngredientForm(forms.ModelForm):

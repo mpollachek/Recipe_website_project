@@ -10,7 +10,7 @@ from recipe_app.views_addrecipe import addrecipe
 urlpatterns = [
     url(r'^home/$', home, name='home'),
     url(r'^recipe_detail/(?P<id>\d+)/$', recipe_detail, name='detail'),
-    url(r'^recipe_update/(?P<id>\d+)/$', recipe_update, name='update'),
+    url(r'^recipe_edit/(?P<pk>\d+)/$', recipe_update, name='update'),
     url(r'^recipe_delete/(?P<id>\d+)/$', recipe_delete, name='delete'),
     url(r'^favorites/', favorites, name='favorites'),
     url(r'^toprated/', toprated, name='toprated'),

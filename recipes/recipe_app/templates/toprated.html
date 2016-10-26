@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}Top Rated Recipes{% endblock %}
+
+
+    {% block content %}
+
+</br></br></br>
+
+        <h2>Top Rated Recipes:</h2>
+
+        {% for obj in queryset_results %}
+
+        <br/>
+
+        <a href="{{ obj.get_absolute_url }}">  <h4> {{ obj.recipe_name }} </h4> </a>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }} <br/>
+
+        {% endfor %}
+
+
+
+    {% endblock %}

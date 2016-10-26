@@ -1,15 +1,17 @@
+from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views import generic
-from django.template.loader import get_template
-from django.core.mail import EmailMessage
 from django.template import Context
+from django.template.loader import get_template
+from django.views import generic
 
-from recipe_app.models import Recipe, MealType, Ingredient, RecipeRating
 
-from recipe_app.forms import RatingForm, RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet
+from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet
+from recipe_app.models import Recipe, MealType, Ingredient
+
+
 
 
 def home(request):
@@ -21,7 +23,8 @@ def home(request):
     #if request.method == 'POST':
     if query:
         queryset_list = Recipe.objects.filter(Q(recipe_name__icontains=query) |
-                                              Q(ingredient__ingredient_name__icontains=query)).distinct()
+                                              Q(ingredient__ingredient_name__icontains=query)).distinct()\
+                                               .order_by('-ratings__average')
 
         context = {
             "queryset_results": queryset_list,
@@ -99,8 +102,31 @@ def recipe_detail(request, id=None):
     return render(request, "recipe_detail.html", context)
 
 
-def recipe_update(request):
-    pass
+def recipe_update(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.method == 'POST':
+        recipe_form = RecipeForm(request.POST, instance=recipe)
+        ingredient_form = IngredientFormSet(request.POST, instance=recipe)
+
+        if recipe_form.is_valid():
+            created_recipe = recipe_form.save(commit=False,)
+            created_recipe.author = request.user
+            ingredient_form = IngredientFormSet(request.POST, instance=created_recipe)
+
+            if ingredient_form.is_valid():
+                created_recipe.save()
+                ingredient_form.save()
+                return HttpResponseRedirect(created_recipe.get_absolute_url())
+
+    else:
+        recipe_form = RecipeForm(instance=recipe)
+        ingredient_form = IngredientFormSet(instance=recipe)
+
+    context = {
+        'ingredient_form': ingredient_form,
+        'recipe_form': recipe_form,
+    }
+    return render(request, "addrecipe.html", context)
 
 
 def recipe_delete(request):
@@ -115,7 +141,13 @@ def favorites(request):
 
 
 def toprated(request):
-    pass
+    queryset_list = Recipe.objects.all().order_by('-ratings__average')
+
+
+    context = {
+        "queryset_results": queryset_list,
+        }
+    return render(request, "toprated.html", context)
 
 
 def myrecipes(request):

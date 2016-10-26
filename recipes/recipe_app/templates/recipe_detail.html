@@ -6,19 +6,16 @@
 
 </br></br></br>
 
-<!-- /*       {% load pinax_ratings_tags %}
 
-        {% overall_rating obj as the_overall_rating %}
-        Overall Rating: <div class="overall_rating">{{ the_overall_rating }}</div>
+        {% load ratings %}
 
-        {% user_rating request.user obj as the_user_rating %}
-        Your Rating: <div class="user_rating">{{ the_user_rating }}</div>
+        {% ratings rec %}
 
         <h1> {{ rec.recipe_name }} </h1> <br/>
         Description: {{ rec.description}}<br/><br/>
         Meal Type: {{ rec.meal_type }}<br/><br/>
 
-*/ -->
+
         Ingredients: <br/>
         {% for ings in rec.ingredient_set.all %}
         {{ ings.quantity }}
@@ -27,9 +24,14 @@
         {% endfor %}<br/>
 
         Directions: {{ rec.directions }}<br/><br/>
-        Created: {{ rec.created }}<br/><br/>
+        Created By: {{ rec.author }}<br/><br/>
+        Created On: {{ rec.created }}<br/><br/>
         Last Modified: {{ rec.modified }}<br/><br/>
 
+        {% if rec.author.pk == request.user.pk %}
+        <a class="btn btn-warning" href="{% url 'recipes:update' pk=rec.pk %}" type="button"
+                 role="button">Edit Recipe</a>
+        {% endif %}
 
-<!-- /*  {% user_rating_js request.user obj %}  */ -->
+
 {% endblock %}

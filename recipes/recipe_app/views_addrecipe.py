@@ -1,11 +1,11 @@
+from django.forms.models import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import CreateView
 
+from recipe_app.forms import RecipeForm, IngredientFormSet
 from recipe_app.models import Recipe, MealType, Ingredient
 
-from recipe_app.forms import RecipeForm, IngredientFormSet
-from django.forms.models import formset_factory
 
 
 
@@ -40,6 +40,7 @@ def addrecipe(request, recipe_pk):
         if 'submit' in request.POST:
             if recipe_form.is_valid():
                 created_recipe = recipe_form.save(commit=False)
+                created_recipe.author = request.user
                 ingredient_form = IngredientFormSet(request.POST, instance=created_recipe)
 
                 if ingredient_form.is_valid():
@@ -53,7 +54,7 @@ def addrecipe(request, recipe_pk):
                     #ing.save()
 
     else:
-        recipe_form = RecipeForm()
+        recipe_form = RecipeForm(instance=recipe)
         ingredient_form = IngredientFormSet(instance=recipe)
 
     context = {'ingredient_form': ingredient_form,

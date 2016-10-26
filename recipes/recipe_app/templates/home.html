@@ -2,13 +2,14 @@
 
 {% block title %}Baller Recipes{% endblock %}
 
+{% load ratings %}
 
     {% block content %}
 
               <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Have the Most Chillinest Recipes on the Block!</h1>
-        <p>Warning: cooking recipes from this site will cause others to fall hopelessly in love with you</p>
+        <h2>An edible maelstrom of organic debris</h2>
+        <p>brings a whole new meaning to Awesome Possum!</p>
       </div>
 
 
@@ -45,8 +46,9 @@
       </div>
 
         <p>There are {{ queryset_results.object_set.count }} recipe{{ obj.title_set.count|pluralize }} matching your search</p>
-        {% for obj in queryset_results %}
 
+
+        {% for obj in queryset_results %}
 
         <br/>
         <!-- {% url "recipes:detail" id=obj.id %} -->

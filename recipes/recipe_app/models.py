@@ -1,18 +1,22 @@
 from __future__ import unicode_literals
 
 from datetime import datetime
-from django.db import models
-from django.contrib.auth .models import User
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
+from django.db import models
 
 
-RATING_VALUES = ((1, 1), (1.5, 1.5), (2, 2), (2.5, 2.5), (3, 3), (3.5, 3.5), (4, 4), (4.5, 4.5), (5, 5))
+from star_ratings.models import Rating
 
 
-MEASUREMENTUNIT_CHOICES = (('tsp', 'tsp'), ('tbsp', 'tbsp'), ('fl oz', 'fl oz'), ('cup', 'cup'), ('pint', 'pint'),
-                           ('quart', 'quart'), ('ml', 'ml'), ('cc', 'cc'), ('liter', 'liter'), ('lb', 'lb'),
-                           ('oz', 'oz'), ('mg', 'mg'), ('g', 'g'), ('kg', 'kg'), ('pieces', 'pieces'),
-                           ('whole', 'whole'),
+RATING_VALUES = ((1, 1), (2, 2), (3, 3), (4, 4), (5, 5))
+
+
+MEASUREMENTUNIT_CHOICES = (('dash', 'dash'), ('tsp', 'tsp'), ('tbsp', 'tbsp'), ('fl oz', 'fl oz'), ('cup', 'cup'),
+                           ('pint', 'pint'), ('quart', 'quart'), ('ml', 'ml'), ('cc', 'cc'), ('liter', 'liter'),
+                           ('lb', 'lb'), ('oz', 'oz'), ('mg', 'mg'), ('g', 'g'), ('kg', 'kg'), ('pieces', 'pieces'),
+                           ('whole', 'whole'), ('slice', 'slice')
                            )
 
 
@@ -29,8 +33,10 @@ class Recipe(models.Model):
     description = models.TextField(null=True)
     meal_type = models.ForeignKey(MealType)
     directions = models.TextField()
+    author = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    ratings = GenericRelation(Rating)
 
     def __unicode__(self):
         return "Recipe: {}, description: {}, meal_type: {}, directions: {}, id: {}"\
@@ -58,16 +64,23 @@ class Ingredient(models.Model):
         return "{} {} {} - {} ".format(self.quantity, self.measurement_unit, self.ingredient_name, self.recipe.recipe_name)
 
 
+
+"""
 class RecipeRating(models.Model):
-    recipe = models.ForeignKey(Recipe)
-    rating = models.FloatField(choices=RATING_VALUES)
+
+    class Meta:
+        unique_together = (('recipe_r_name', 'author'))
+
+    recipe_r_name = models.ForeignKey(Recipe)
+    rating = models.FloatField(choices=RATING_VALUES, null=True)
+    author = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    """
+
     def __unicode__(self):
-        return "RecipeRating"
-    """
+        return "Recipe Name: {}, Recipe Rating: {}, Recipe Author: {}" .format(self.recipe_r_name, self.rating, self.author)
+"""
 
 
 class UserProfile(models.Model):
@@ -78,4 +91,4 @@ class UserProfile(models.Model):
         #picture = models.ImageField(upload_to='profile_images', blank=True)
 
         def __unicode__(self):
-            return self.user.username
+            return self.user
