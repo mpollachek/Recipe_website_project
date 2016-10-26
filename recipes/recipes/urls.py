@@ -1,8 +1,9 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from recipe_app.views import home
 
 from recipe_app import urls as recipe_app_urls
+from recipe_app.views import home
+
 
 """recipes URL Configuration
 
@@ -21,11 +22,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from recipe_app import urls as recipe_app_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^recipe_app/', include(recipe_app_urls, namespace='recipes')),
-    url(r'^ratings/', include('pinax.ratings.urls')),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
