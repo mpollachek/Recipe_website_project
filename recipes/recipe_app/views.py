@@ -94,9 +94,8 @@ def recipe_delete(request):
 
 
 def favorites(request):
-    pass  #changed model
-"""
-    favorites_list = UserProfile.favorites.all().order_by('-ratings__average')
+
+    favorites_list = Favorite.objects.filter(fav_user=request.user)  #.order_by('fav_recipe')
 
     count = favorites_list.count()
     context = {
@@ -105,7 +104,7 @@ def favorites(request):
     }
 
     return render(request, "favorites.html", context)
-"""
+
 
 def toprated(request):
     queryset_list = Recipe.objects.all().order_by('-ratings__average')
@@ -118,7 +117,15 @@ def toprated(request):
 
 
 def myrecipes(request):
-    pass
+    myrecipes_list = Recipe.objects.filter(author=request.user)  #.order_by('recipe_name')
+
+    count = myrecipes_list.count()
+    context = {
+        "myrecipes_list": myrecipes_list,
+        "count": count,
+    }
+
+    return render(request, "myrecipes.html", context)
 
 
 def contact(request):

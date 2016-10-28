@@ -71,7 +71,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/recipe_app/">My Account</a></li>
                 <li><a href="{% url 'recipes:favorites' %}">My Favorite Recipes</a></li>
-                <li><a href="/recipe_app/">Recipes I've Created</a></li>
+                <li><a href="{% url 'recipes:myrecipes' %}">Recipes I've Created</a></li>
                 <li><a href="{% url 'recipes:addrecipe' recipe_pk %}">Create Recipe</a></li>
                 <li><a href="{% url 'recipes:logout' %}">Log Out</a></li>
               </ul>

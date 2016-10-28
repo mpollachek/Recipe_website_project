@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}Recipes I've created{% endblock %}
+
+  {% block content %}
+
+</br></br></br>
+
+    {% if count == null %}
+    You have not created any recipes yet <br/>
+    <a href="{% url 'recipes:addrecipe' %}">Create One Here</a
+        {% endif %}
+
+    {% if count != null %}
+
+        <p>You have created {{ count }} recipe{{ count|pluralize }}! </p>
+        <p>Great Job! </p>
+
+    {% for obj in myrecipes_list %}
+
+        <br/>
+
+        <a href="{{ obj.get_absolute_url }}">  <h4> {{ obj.recipe_name }} </h4> </a>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }} <br/>
+
+    {% endfor %}
+
+    {% endif %}
+
+        {% endblock %}

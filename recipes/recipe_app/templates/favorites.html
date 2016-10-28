@@ -6,20 +6,20 @@
 
 </br></br></br>
 
- {% if count != null %}
+    {% if count != null %}
 
         <p>There {% if count == 1 %} is {% endif %} {% if count != 1 %} are {% endif %} {{ count }}
             recipe{{ count|pluralize }} in your favorites list</p>
 
-        {% for obj in favorites_list %}
+    {% for obj in favorites_list %}
 
         <br/>
-        <!-- {% url "recipes:detail" id=obj.id %} -->
-        <a href="{{ obj.get_absolute_url }}">  <h4> {{ obj.recipe_name }} </h4> </a>
-        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }} <br/>
 
-        {% endfor %}
+        <a href="{{ obj.get_absolute_url }}">  <h4> {{ obj.fav_recipe.recipe_name }} </h4> </a>
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.fav_recipe.description }} <br/>
 
-        {% endif %}
+    {% endfor %}
+
+    {% endif %}
 
         {% endblock %}
