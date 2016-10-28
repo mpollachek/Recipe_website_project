@@ -35,7 +35,8 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ['recipe_name', 'description', 'meal_type', 'directions', ]
-        #if using multiple forms, I will remove some fields i.e.measurement, ingredients, title
+        #widgets = {'meal_type': forms.CheckboxSelectMultiple}
+        #above line doesn't throw an error but form will not save
 
 
 class UserForm(forms.ModelForm):

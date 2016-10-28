@@ -9,15 +9,14 @@ from django.views import generic
 
 
 from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet
-from recipe_app.models import Recipe, MealType, Ingredient
+from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 
 
 
 
 def home(request):
 
-    queryset_list = Recipe.objects.all() #.order_by(RecipeRating)
-
+    context = {}
     query = request.GET.get("q")
 
     #if request.method == 'POST':
@@ -26,18 +25,15 @@ def home(request):
                                               Q(ingredient__ingredient_name__icontains=query)).distinct()\
                                                .order_by('-ratings__average')
 
+        count = queryset_list.count()
         context = {
             "queryset_results": queryset_list,
-            #"page_request_var": page_request_var
-        }
-        return render(request, "home.html", context)
+            "count": count,
+            }
 
-    else:
+    return render(request, "home.html", context)
 
-        context = {
-            "queryset_results": queryset_list
-        }
-        return render(request, "home.html", context)
+
 
 """
         paginator = Paginator(queryset_list, 25)
@@ -51,45 +47,6 @@ def home(request):
             queryset = paginator.page(paginator.num_pages)
 """
 
-
-
-"""
-    if request.method == 'POST':
-        search_recipe_form = SearchRecipeForm(request.POST)
-        if search_recipe_form.is_valid():
-
-            #all_recipes = Recipe.objects.all()
-            clean_name = search_recipe_form.cleaned_data['name']
-            clean_ingredients = search_recipe_form.cleaned_data['ingredients']
-            results = Recipe.objects.filter(Q(name__icontains=clean_name) | Q(ingredients__icontains=clean_ingredients))
-
-            """
-"""
-            results = Recipe.objects.get(
-                #Q(name__icontains='search_recipe_form.cleaned_data.iteritems()) |
-                Q(ingredients__icontains='search_recipe_form.cleaned_data.iteritems())
-            )
-"""
-"""
-
-        else:
-            search_recipe_form = SearchRecipeForm()
-            clean_name = search_recipe_form.cleaned_data['title']
-            clean_ingredients = search_recipe_form.cleaned_data['ingredients']
-
-    else:
-        search_recipe_form = SearchRecipeForm()
-        clean_name = search_recipe_form
-        clean_ingredients = search_recipe_form
-
-    context = {'search_recipe_form': search_recipe_form, 'clean_name': clean_name,
-               'clean_ingredients': clean_ingredients,}
-
-    return results
-
-    #return render(request, 'recipesearch.html', context)
-
-"""
 #Lookup AJAX for autocomplete feature
 
 
@@ -137,8 +94,18 @@ def recipe_delete(request):
 
 
 def favorites(request):
-    pass
+    pass  #changed model
+"""
+    favorites_list = UserProfile.favorites.all().order_by('-ratings__average')
 
+    count = favorites_list.count()
+    context = {
+        "favorites_list": favorites_list,
+        "count": count,
+    }
+
+    return render(request, "favorites.html", context)
+"""
 
 def toprated(request):
     queryset_list = Recipe.objects.all().order_by('-ratings__average')

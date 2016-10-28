@@ -6,7 +6,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
 from django.db import models
 
-
 from star_ratings.models import Rating
 
 
@@ -92,3 +91,11 @@ class UserProfile(models.Model):
 
         def __unicode__(self):
             return self.user
+
+
+class Favorite(models.Model):
+    fav_recipe = models.ForeignKey(Recipe, default=False)
+    fav_user = models.ForeignKey(User)
+
+    def __str__(self):
+            return "recipe: {}, user: {}".format(self.fav_recipe.recipe_name, self.fav_user)

@@ -45,8 +45,10 @@
           </form>
       </div>
 
-        <p>There are {{ queryset_results.object_set.count }} recipe{{ obj.title_set.count|pluralize }} matching your search</p>
+        {% if count != null %}
 
+        <p>There {% if count == 1 %} is {% endif %} {% if count != 1 %} are {% endif %} {{ count }}
+            recipe{{ count|pluralize }} matching your search</p>
 
         {% for obj in queryset_results %}
 
@@ -56,5 +58,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp; {{ obj.description }} <br/>
 
         {% endfor %}
+
+        {% endif %}
 
         {% endblock %}
