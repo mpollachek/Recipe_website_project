@@ -94,8 +94,8 @@ class UserProfile(models.Model):
 
 
 class Favorite(models.Model):
-    fav_recipe = models.ForeignKey(Recipe, default=False)
-    fav_user = models.ForeignKey(User)
+    fav_recipe = models.ManyToManyField(Recipe, default=False)
+    fav_user = models.ManyToManyField(User)
 
     def __str__(self):
-            return "recipe: {}, user: {}".format(self.fav_recipe.recipe_name, self.fav_user)
+            return "recipe: {}, user: {}".format(self.fav_recipe, self.fav_user)

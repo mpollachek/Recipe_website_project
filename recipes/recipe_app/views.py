@@ -8,7 +8,8 @@ from django.template.loader import get_template
 from django.views import generic
 
 
-from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet
+from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet, \
+    FavoriteForm
 from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 
 
@@ -17,13 +18,15 @@ from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 def home(request):
 
     context = {}
+    mealtype = request.GET.get("mealtype[]")
     query = request.GET.get("q")
 
     #if request.method == 'POST':
     if query:
-        queryset_list = Recipe.objects.filter(Q(recipe_name__icontains=query) |
-                                              Q(ingredient__ingredient_name__icontains=query)).distinct()\
-                                               .order_by('-ratings__average')
+        queryset_list = Recipe.objects.filter(meal_type=mealtype)\
+            .filter(Q(recipe_name__icontains=query) |
+                    Q(ingredient__ingredient_name__icontains=query)).distinct()\
+            .order_by('-ratings__average')
 
         count = queryset_list.count()
         context = {
@@ -52,9 +55,15 @@ def home(request):
 
 def recipe_detail(request, id=None):
     instance = get_object_or_404(Recipe, id=id)
+    favorite_form = FavoriteForm(request.post, fav_user=request.user, fav_recipe=instance)
+
+    if request.method == 'POST':
+        if 'favorite' in request.POST:
+            favorite_form.save()
 
     context = {
-        "rec": instance
+        "rec": instance,
+        "favorite_form": favorite_form
     }
     return render(request, "recipe_detail.html", context)
 
@@ -95,9 +104,9 @@ def recipe_delete(request):
 
 def favorites(request):
 
-    favorites_list = Favorite.objects.filter(fav_user=request.user)  #.order_by('fav_recipe')
-
+    favorites_list = Favorite.objects.filter(fav_user=request.user).order_by('-fav_recipe')
     count = favorites_list.count()
+
     context = {
         "favorites_list": favorites_list,
         "count": count,
@@ -117,7 +126,7 @@ def toprated(request):
 
 
 def myrecipes(request):
-    myrecipes_list = Recipe.objects.filter(author=request.user)  #.order_by('recipe_name')
+    myrecipes_list = Recipe.objects.filter(author=request.user).order_by('recipe_name')
 
     count = myrecipes_list.count()
     context = {

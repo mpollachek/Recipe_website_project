@@ -11,6 +11,12 @@
 
         {% ratings rec %}
 
+        <form method="post" action="">
+        <button type="button" name="favorite" class="btn btn-success">
+            Favorite this Recipe </button>
+        {% csrf_token %}
+        </form>
+
         <h1> {{ rec.recipe_name }} </h1> <br/>
         Description: {{ rec.description}}<br/><br/>
         Meal Type: {{ rec.meal_type }}<br/><br/>

@@ -15,31 +15,31 @@
 
       <div class="container">
          <h3>What types of meal(s) are you looking for?</h3>
-         <form>
+
+
+          <div>
+          <form action="" method="GET">
             <label class="checkbox-inline">
-                <input type="checkbox" value="Breakfast">Breakfast
+                <input type="checkbox" name="mealtype[]" value="Breakfast">Breakfast
             </label>
             <label class="checkbox-inline">
-                <input type="checkbox" value="Lunch">Lunch
+                <input type="checkbox" name="mealtype[]" value="Lunch">Lunch
             </label>
             <label class="checkbox-inline">
-                <input type="checkbox" value="Dinner">Dinner
+                <input type="checkbox" name="mealtype[]" value="Dinner">Dinner
             </label>
             <br>
             <label class="checkbox-inline">
-                <input type="checkbox" value="Appetizer">Appetizer
+                <input type="checkbox" name="mealtype[]" value="Appetizer">Appetizer
             </label>
             <label class="checkbox-inline">
-                <input type="checkbox" value="Side_Dish">Side Dish
+                <input type="checkbox" name="mealtype[]" value="Side_Dish">Side Dish
             </label>
             <label class="checkbox-inline">
-                <input type="checkbox" value="Dessert">Dessert
+                <input type="checkbox" name="mealtype[]" value="Dessert">Dessert
             </label>
-         </form>
+            </br>
 
-
-      <div>
-          <form action="" method="GET">
               <input type="text" name='q' placeholder="Recipe Name or Ingredients here" />
               <input id=search_recipe_form type="submit" value="Search Recipes!" />
           </form>
