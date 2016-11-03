@@ -55,10 +55,12 @@ def home(request):
 
 def recipe_detail(request, id=None):
     instance = get_object_or_404(Recipe, id=id)
-    favorite_form = FavoriteForm(request.post, fav_user=request.user, fav_recipe=instance)
+    favorite_form = FavoriteForm(request)
 
     if request.method == 'POST':
         if 'favorite' in request.POST:
+            favorite_form.save(commit=False)
+            favorite_form.fav_recipe = instance
             favorite_form.save()
 
     context = {
@@ -75,7 +77,7 @@ def recipe_update(request, pk):
         ingredient_form = IngredientFormSet(request.POST, instance=recipe)
 
         if recipe_form.is_valid():
-            created_recipe = recipe_form.save(commit=False,)
+            created_recipe = recipe_form.save(commit=False)
             created_recipe.author = request.user
             ingredient_form = IngredientFormSet(request.POST, instance=created_recipe)
 

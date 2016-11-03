@@ -18,9 +18,12 @@ class SearchRecipeForm(forms.TextInput):
 
 
 class FavoriteForm(forms.ModelForm):
+    def __init__(self, fav_user):
+        self.user = fav_user
+
     class Meta:
         model = Favorite
-        fields = "__all__"
+        fields = ['fav_recipe']
 
 
 class RecipeForm(forms.ModelForm):
