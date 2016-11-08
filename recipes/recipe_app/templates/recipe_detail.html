@@ -8,11 +8,11 @@
 
 
         {% load ratings %}
-
         {% ratings rec %}
 
+
         <form method="post" action="">
-        <button type="button" name="favorite" class="btn btn-success">
+        <button type="submit" name="favorite" class="btn btn-success">
             Favorite this Recipe </button>
         {% csrf_token %}
         </form>

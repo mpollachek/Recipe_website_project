@@ -8,8 +8,8 @@ from django.template.loader import get_template
 from django.views import generic
 
 
-from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet, \
-    FavoriteForm
+from recipe_app.forms import RecipeForm, SearchRecipeForm, ContactForm, IngredientFormSet, FavoriteForm, \
+    MealTypeForm
 from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 
 
@@ -18,12 +18,12 @@ from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 def home(request):
 
     context = {}
-    mealtype = request.GET.get("mealtype[]")
+    mealtypes = request.GET.get("mealtype")
     query = request.GET.get("q")
 
     #if request.method == 'POST':
     if query:
-        queryset_list = Recipe.objects.filter(meal_type=mealtype)\
+        queryset_list = Recipe.objects.filter(meal_type__name=mealtypes)\
             .filter(Q(recipe_name__icontains=query) |
                     Q(ingredient__ingredient_name__icontains=query)).distinct()\
             .order_by('-ratings__average')
@@ -55,18 +55,19 @@ def home(request):
 
 def recipe_detail(request, id=None):
     instance = get_object_or_404(Recipe, id=id)
-    favorite_form = FavoriteForm(request)
-
-    if request.method == 'POST':
-        if 'favorite' in request.POST:
-            favorite_form.save(commit=False)
-            favorite_form.fav_recipe = instance
-            favorite_form.save()
+    #favorite_form = FavoriteForm(request.POST)
+    #if request.method == 'POST':
+        #if 'favorite' in request.POST:
+            #if favorite_form.is_valid():
+                #form = favorite_form.save(commit=False)
+                #form.fav_user = request.user
+                #form.fav_recipe = instance
+                #form.save()
 
     context = {
         "rec": instance,
-        "favorite_form": favorite_form
-    }
+        #"favorite_form": favorite_form,
+            }
     return render(request, "recipe_detail.html", context)
 
 

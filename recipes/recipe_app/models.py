@@ -9,6 +9,7 @@ from django.db import models
 from star_ratings.models import Rating
 
 
+
 RATING_VALUES = ((1, 1), (2, 2), (3, 3), (4, 4), (5, 5))
 
 
@@ -91,6 +92,7 @@ class UserProfile(models.Model):
 
         def __unicode__(self):
             return self.user
+
 
 
 class Favorite(models.Model):
