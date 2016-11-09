@@ -18,12 +18,15 @@ from recipe_app.models import Recipe, MealType, Ingredient, Favorite
 def home(request):
 
     context = {}
-    mealtypes = request.GET.get("mealtype")
+    mealtypes = []
     query = request.GET.get("q")
 
     #if request.method == 'POST':
     if query:
-        queryset_list = Recipe.objects.filter(meal_type__name=mealtypes)\
+        for mt in request.GET.getlist('mealtype'):
+            mealtypes.append(mt)
+            #print mealtypes
+        queryset_list = Recipe.objects.filter(meal_type__name__in=mealtypes)\
             .filter(Q(recipe_name__icontains=query) |
                     Q(ingredient__ingredient_name__icontains=query)).distinct()\
             .order_by('-ratings__average')
