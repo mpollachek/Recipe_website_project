@@ -67,6 +67,11 @@ def recipe_detail(request, id=None):
                 #form.fav_recipe = instance
                 #form.save()
 
+    #fav = request.POST("favorite")
+    #if fav:
+        #f = Favorite(fav_recipe=instance, fav_user=request.user)
+        #f.save()
+
     context = {
         "rec": instance,
         #"favorite_form": favorite_form,
