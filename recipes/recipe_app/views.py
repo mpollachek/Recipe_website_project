@@ -25,7 +25,6 @@ def home(request):
     if query:
         for mt in request.GET.getlist('mealtype'):
             mealtypes.append(mt)
-            #print mealtypes
         queryset_list = Recipe.objects.filter(meal_type__name__in=mealtypes)\
             .filter(Q(recipe_name__icontains=query) |
                     Q(ingredient__ingredient_name__icontains=query)).distinct()\
@@ -58,18 +57,20 @@ def home(request):
 
 def recipe_detail(request, id=None):
     instance = get_object_or_404(Recipe, id=id)
-    #favorite_form = FavoriteForm(request.POST)
+
     #if request.method == 'POST':
-        #if 'favorite' in request.POST:
+        #if 'favorite' in request.POST.keys():
+            #favorite_form = FavoriteForm(request.POST)
             #if favorite_form.is_valid():
                 #form = favorite_form.save(commit=False)
                 #form.fav_user = request.user
                 #form.fav_recipe = instance
                 #form.save()
 
+
     #fav = request.POST("favorite")
     #if fav:
-        #f = Favorite(fav_recipe=instance, fav_user=request.user)
+        #f = Favorite(fav_recipe=instance)
         #f.save()
 
     context = {

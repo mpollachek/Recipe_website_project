@@ -96,7 +96,7 @@ class UserProfile(models.Model):
 
 
 class Favorite(models.Model):
-    fav_recipe = models.ManyToManyField(Recipe, default=False)
+    fav_recipe = models.ManyToManyField(Recipe)
     fav_user = models.ManyToManyField(User)
 
     def __str__(self):
